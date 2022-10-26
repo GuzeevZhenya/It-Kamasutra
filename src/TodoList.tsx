@@ -17,14 +17,20 @@ type ObjectType = {
 
 export const TodoList = (props: TodoListPropsType) => {
   const [newTaskTitle, setNewTaskTitle] = useState("");
+
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(event.target.value);
   };
 
-  const onChangeInputPress = (event: KeyboardEvent<HTMLInputElement>) => {
+  const onKeyInputPress = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.charCode === 13) {
       props.addTask(newTaskTitle);
     }
+  };
+
+  const addTask = () => {
+    props.addTask(newTaskTitle);
+    setNewTaskTitle("");
   };
 
   const taskList = props.tasks.map((item) => {
@@ -43,16 +49,9 @@ export const TodoList = (props: TodoListPropsType) => {
         <input
           value={newTaskTitle}
           onChange={(event) => onChangeInput(event)}
-          onKeyPress={(event) => onChangeInputPress(event)}
+          onKeyPress={(event) => onKeyInputPress(event)}
         />
-        <button
-          onClick={() => {
-            props.addTask(newTaskTitle);
-            setNewTaskTitle("");
-          }}
-        >
-          +
-        </button>
+        <button onClick={addTask}>+</button>
       </div>
       <ul>{taskList}</ul>
       <div>
