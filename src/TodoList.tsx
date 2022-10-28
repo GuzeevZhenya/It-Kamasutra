@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
 import { FilterValuType } from "./App";
+import { Button } from "./Button";
 
 type TodoListPropsType = {
   title: string;
@@ -17,7 +18,7 @@ type ObjectType = {
 
 export const TodoList = (props: TodoListPropsType) => {
   const [newTaskTitle, setNewTaskTitle] = useState("");
-
+  const [filterValue, setFilterValue] = useState("all");
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(event.target.value);
   };
@@ -28,15 +29,24 @@ export const TodoList = (props: TodoListPropsType) => {
     }
   };
 
+  const removeTaskHandler = (tId: string) => {
+    props.removeTask(tId);
+  };
+
   const addTask = () => {
     props.addTask(newTaskTitle);
     setNewTaskTitle("");
   };
 
+  const changeFilterActiveHandler = (filterValue: FilterValuType) => {
+    props.filteredTask(filterValue);
+  };
+
   const taskList = props.tasks.map((item) => {
     return (
       <li>
-        <button onClick={() => props.removeTask(item.id)}>X</button>
+        {/* <button onClick={() => props.removeTask(item.id)}>X</button> */}
+        <Button name={"x"} callBack={() => removeTaskHandler(item.id)} />
         <input type="checkbox" checked={item.isDone} />
         <span>{item.title}</span>
       </li>
@@ -51,13 +61,16 @@ export const TodoList = (props: TodoListPropsType) => {
           onChange={(event) => onChangeInput(event)}
           onKeyPress={(event) => onKeyInputPress(event)}
         />
-        <button onClick={addTask}>+</button>
+        {/* <button onClick={addTask}>+</button> */}
+        <Button callBack={addTask} name={"add"} />
       </div>
       <ul>{taskList}</ul>
       <div>
-        <button onClick={() => props.filteredTask("All")}>All</button>
-        <button onClick={() => props.filteredTask("Active")}>Active</button>
-        <button onClick={() => props.filteredTask("Completed")}>
+        <button onClick={() => changeFilterActiveHandler("All")}>All</button>
+        <button onClick={() => changeFilterActiveHandler("Active")}>
+          Active
+        </button>
+        <button onClick={() => changeFilterActiveHandler("Completed")}>
           Completed
         </button>
       </div>
