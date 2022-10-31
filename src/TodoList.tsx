@@ -66,13 +66,25 @@ export const TodoList = (props: TodoListPropsType) => {
       </div>
       <ul>{taskList}</ul>
       <div>
-        <button onClick={() => changeFilterActiveHandler("All")}>All</button>
+        {/* <button onClick={() => changeFilterActiveHandler("All")}>All</button>
         <button onClick={() => changeFilterActiveHandler("Active")}>
           Active
         </button>
         <button onClick={() => changeFilterActiveHandler("Completed")}>
           Completed
-        </button>
+        </button> */}
+        <Button
+          name={"All"}
+          callBack={() => changeFilterActiveHandler("All")}
+        />
+        <Button
+          name={"Active"}
+          callBack={() => changeFilterActiveHandler("Active")}
+        />
+        <Button
+          name={"Completed"}
+          callBack={() => changeFilterActiveHandler("Completed")}
+        />
       </div>
     </div>
   );
