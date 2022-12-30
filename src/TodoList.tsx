@@ -2,6 +2,10 @@ import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { AddItemForm } from "./AddItemForm";
 import { FilterValuesType, TaskType } from "./App";
 import { EditTableSpan } from "./EditTableSpan";
+import { Button, IconButton, Checkbox, ButtonGroup } from "@mui/material";
+import CanselPresentationOutlinedIcon from "@mui/icons-material/CancelPresentationOutlined";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 //rsc
 // typescript =>
 // 1. Variable
@@ -31,7 +35,7 @@ type TodoListPropsType = {
 
 const TodoList = (props: TodoListPropsType) => {
   const tasksListItems = props.tasks.length ? (
-    <ul>
+    <List>
       {props.tasks.map((task) => {
         const removeTask = () => props.removeTask(task.id, props.todoListId);
         const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) =>
@@ -46,23 +50,27 @@ const TodoList = (props: TodoListPropsType) => {
         };
 
         return (
-          <li key={task.id}>
-            <input
-              type="checkbox"
+          <ListItem key={task.id} sx={{ p: "0" }}>
+            <Checkbox
+              size="small"
               checked={task.isDone}
               onChange={changeTaskStatus}
             />
+
             <div
               style={{ display: "inline-block" }}
               className={task.isDone ? "task-done" : ""}
             >
               <EditTableSpan title={task.title} changeTitle={changeTaskTitle} />
             </div>
-            <button onClick={removeTask}>x</button>
-          </li>
+
+            <IconButton size="small" color="error" onClick={() => removeTask()}>
+              <CanselPresentationOutlinedIcon fontSize="small" />
+            </IconButton>
+          </ListItem>
         );
       })}
-    </ul>
+    </List>
   ) : (
     <span>List is empty</span>
   );
@@ -85,30 +93,41 @@ const TodoList = (props: TodoListPropsType) => {
     <div>
       <div>
         <EditTableSpan title={props.title} changeTitle={changeTodoLisetTitle} />
-        <button onClick={() => removeTodoList()}>x</button>
+
+        <IconButton onClick={() => removeTodoList()}>
+          <CanselPresentationOutlinedIcon />
+        </IconButton>
       </div>
       <AddItemForm addItem={addNewTask} />
 
       {tasksListItems}
       <div>
-        <button
-          className={props.filter === "all" ? "btn-active" : ""}
-          onClick={onClickHandlerCreator("all")}
-        >
-          All
-        </button>
-        <button
-          className={props.filter === "active" ? "btn-active" : ""}
-          onClick={onClickHandlerCreator("active")}
-        >
-          Active
-        </button>
-        <button
-          className={props.filter === "completed" ? "btn-active" : ""}
-          onClick={onClickHandlerCreator("completed")}
-        >
-          Completed
-        </button>
+        <ButtonGroup fullWidth disableElevation size="small">
+          <Button
+            sx={{ mr: "3px", fontSize: "10px", p: "4px 4px" }}
+            color={props.filter === "all" ? "secondary" : "primary"}
+            variant="contained"
+            onClick={onClickHandlerCreator("all")}
+          >
+            All
+          </Button>
+          <Button
+            sx={{ mr: "3px", fontSize: "10px", p: "4px 4px" }}
+            color={props.filter === "active" ? "secondary" : "primary"}
+            variant="contained"
+            onClick={onClickHandlerCreator("active")}
+          >
+            Active
+          </Button>
+          <Button
+            sx={{ fontSize: "10px", p: "4px 4px" }}
+            color={props.filter === "completed" ? "secondary" : "primary"}
+            variant="contained"
+            onClick={onClickHandlerCreator("completed")}
+          >
+            Completed
+          </Button>
+        </ButtonGroup>
       </div>
     </div>
   );

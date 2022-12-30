@@ -3,6 +3,14 @@ import "./App.css";
 import TodoList from "./TodoList";
 import { v1 } from "uuid";
 import { AddItemForm } from "./AddItemForm";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import { Box, Container } from "@mui/system";
+import AppBar from "@mui/material/AppBar";
+import Typography from "@mui/material/Typography";
+import { Menu } from "@mui/icons-material";
+import Button from "@mui/material/Button";
+import { Grid, Paper } from "@mui/material";
 
 //C - create (validation)
 //R - read (pagination, sorting, filtration)
@@ -15,7 +23,7 @@ export type TaskType = {
   isDone: boolean;
 };
 
-type TodoListType = {
+export type TodoListType = {
   id: string;
   title: string;
   filter: FilterValuesType;
@@ -141,27 +149,53 @@ function App() {
   };
   return (
     <div className="App">
-      <AddItemForm addItem={addTodoList} />
-      {todoLists.map((item: TodoListType) => {
-        const filteredTask = getFilteredTasks(tasks[item.id], item.filter);
-
-        return (
-          <TodoList
-            key={item.id}
-            removeTodoList={removeTodoList}
-            tasks={filteredTask}
-            title={item.title}
-            filter={item.filter}
-            addTask={addTask}
-            removeTask={removeTask}
-            changeTaskStatus={changeTaskStatus}
-            changeTodoListFilter={changeTodoListFilter}
-            todoListId={item.id}
-            changeTaskTitle={changeTaskTitle}
-            changeTodoListTitle={changeTodoListTitle}
-          />
-        );
-      })}
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            arial-lable="menu"
+            sx={{ mr: 2 }}
+          >
+            <Menu />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            News
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+      <Container fixed>
+        <Grid container >
+          <AddItemForm addItem={addTodoList} />
+        </Grid>
+        <Grid container sx={{p:"10px 0"}}>
+          {todoLists.map((item: TodoListType) => {
+            const filteredTask = getFilteredTasks(tasks[item.id], item.filter);
+            return (
+              <Grid sx={{p:"0 10px"}}>
+                <Paper sx={{ p: "20px" }} elevation={15}>
+                  <TodoList
+                    key={item.id}
+                    removeTodoList={removeTodoList}
+                    tasks={filteredTask}
+                    title={item.title}
+                    filter={item.filter}
+                    addTask={addTask}
+                    removeTask={removeTask}
+                    changeTaskStatus={changeTaskStatus}
+                    changeTodoListFilter={changeTodoListFilter}
+                    todoListId={item.id}
+                    changeTaskTitle={changeTaskTitle}
+                    changeTodoListTitle={changeTodoListTitle}
+                  />
+                </Paper>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import TextField from "@mui/material/TextField";
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
 
 type EditTablePropsType = {
@@ -12,7 +13,7 @@ export const EditTableSpan = (props: EditTablePropsType) => {
   const onEditMode = () => {
     setEditMode(true);
   };
-  
+
   const offEditMode = () => {
     setEditMode(false);
     props.changeTitle(title);
@@ -27,7 +28,8 @@ export const EditTableSpan = (props: EditTablePropsType) => {
   };
 
   return isEditMode ? (
-    <input
+    <TextField
+      variant="standard"
       value={title}
       onBlur={offEditMode}
       autoFocus
