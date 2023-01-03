@@ -1,4 +1,6 @@
 import React, { useState, ChangeEvent, KeyboardEvent } from "react";
+import { Button, IconButton, TextField } from "@mui/material";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void;
@@ -36,13 +38,27 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
 
   return (
     <div>
-      <input
+      <TextField
+        style={{ padding: "6px" }}
+        size="small"
         value={title}
         onKeyDown={onEnterAddItem}
         onChange={setLocalTitle}
-        className={error ? "input-error" : ""}
+        variant="outlined"
+        label="Title"
+        error={error}
+        helperText={error && "Please, enter new title"}
       />
-      <button onClick={addNewItem}>+</button>
+
+      <Button
+        sx={{ mr: "3px", fontSize: "10px", p: "4px 4px" }}
+        size="small"
+        variant="contained"
+        onClick={addNewItem}
+        endIcon={<PostAddIcon />}
+      >
+        Add
+      </Button>
       {errorMessage}
     </div>
   );
