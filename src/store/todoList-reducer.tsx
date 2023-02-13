@@ -1,14 +1,14 @@
 //Преобразовать стэйт
 //Вернуть новый стэйт
 
-import React from 'react';
-import {FilterValuesType, TodoListType} from '../App';
-import {v1} from 'uuid';
+import React from "react";
+import { FilterValuesType, TodoListType } from "../App";
+import { v1 } from "uuid";
 
-export const REMOVE_TODOLIST = 'REMOVE-TODOLIST' as const;
-export const ADD_TODOLIST = 'ADD-TODOLIST' as const;
-export const CHANGE_FILTER = 'CHANGE_FILTER' as const;
-export const CHANGE_TITLE = 'CHANGE_TITLE' as const;
+export const REMOVE_TODOLIST = "REMOVE-TODOLIST" as const;
+export const ADD_TODOLIST = "ADD-TODOLIST" as const;
+export const CHANGE_FILTER = "CHANGE_FILTER" as const;
+export const CHANGE_TITLE = "CHANGE_TITLE" as const;
 
 type RemoveTodoListAT = {
   type: typeof REMOVE_TODOLIST;
@@ -41,7 +41,7 @@ type ActiveType =
 export const todolistReducer = (
   todolists: Array<TodoListType>,
   action: ActiveType
-): Array<TodoListType> => {
+) => {
   switch (action.type) {
     case REMOVE_TODOLIST: {
       return todolists.filter((tl) => tl.id !== action.id);
@@ -51,19 +51,19 @@ export const todolistReducer = (
       const newTodoList: TodoListType = {
         id: v1(),
         title: action.title,
-        filter: 'all',
+        filter: "all",
       };
       return [...todolists, newTodoList];
     }
 
     case CHANGE_TITLE:
       return todolists.map((tl) =>
-        tl.id === action.id ? {...tl, title: action.title} : tl
+        tl.id === action.id ? { ...tl, title: action.title } : tl
       );
 
     case CHANGE_FILTER:
       return todolists.map((tl) =>
-        tl.id === action.id ? {...tl, filter: action.filter} : tl
+        tl.id === action.id ? { ...tl, filter: action.filter } : tl
       );
 
     default:
