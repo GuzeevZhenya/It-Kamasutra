@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback } from "react";
+import React, { ChangeEvent, useCallback, memo } from "react";
 import { FilterValuesType } from "./App";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
@@ -30,7 +30,8 @@ type PropsType = {
   ) => void;
 };
 
-export function Todolist(props: PropsType) {
+export const Todolist = memo((props: PropsType) => {
+  console.log("addItemForm");
   const addTask = useCallback(
     (title: string) => {
       props.addTask(title, props.id);
@@ -41,14 +42,26 @@ export function Todolist(props: PropsType) {
   const removeTodolist = () => {
     props.removeTodolist(props.id);
   };
-  const changeTodolistTitle = (title: string) => {
-    props.changeTodolistTitle(props.id, title);
-  };
+  const changeTodolistTitle = useCallback(
+    (title: string) => {
+      props.changeTodolistTitle(props.id, title);
+    },
+    [props.changeTodolistTitle, props.id]
+  );
 
   const onAllClickHandler = () => props.changeFilter("all", props.id);
   const onActiveClickHandler = () => props.changeFilter("active", props.id);
   const onCompletedClickHandler = () =>
     props.changeFilter("completed", props.id);
+
+  let tasks = props.tasks;
+  if (props.filter === "active") {
+    tasks = tasks.filter((t) => t.isDone === false);
+  }
+
+  if (props.filter === "completed") {
+    tasks = tasks.filter((t) => t.isDone === true);
+  }
 
   return (
     <div>
@@ -60,7 +73,7 @@ export function Todolist(props: PropsType) {
       </h3>
       <AddItemForm addItem={addTask} />
       <div>
-        {props.tasks.map((t) => {
+        {tasks.map((t) => {
           const onClickHandler = () => props.removeTask(t.id, props.id);
           const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
             let newIsDoneValue = e.currentTarget.checked;
@@ -111,4 +124,4 @@ export function Todolist(props: PropsType) {
       </div>
     </div>
   );
-}
+});
